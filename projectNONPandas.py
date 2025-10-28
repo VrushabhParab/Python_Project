@@ -50,6 +50,7 @@ def student_portal(students):
     print(f"\nWelcome, {found["NAME OF THE STUDENT"]}!")
     print("1. Show Marks")
     print("2. Show Remarks")
+    print("3. Logout")
     choice = int(input("Enter Choice: "))
 
     if choice==1:
@@ -66,13 +67,15 @@ def student_portal(students):
         elif choice == 3:
             total = gms + dss
             percentage = (total / 100) * 100
-            print("Total Marks Obtained (Out of 200): ",total)
+            print("Total Marks Obtained (Out of 100): ",total)
             print(f"Precentage Obtained: {"%.2f"%percentage} %")
         else:
             print("Invalid Choice!")
     elif choice == 2:
         remark = found["REMARKS"]
         print("Remark: ",remark)
+    elif choice ==3:
+        print("Logging Out...\n")
     else:
         print("Invalid Choice!")
 
@@ -110,8 +113,8 @@ def faculty_portal(students,faculty):
                 print("Invalid Student Name. Try Again.\n")
                 continue
 
-            gms = float(input("Enter General Management Score (OUT of 50): "))
-            dss = float(input("Enter Domain Specific Score (OUT of 50): "))
+            gms = float(input("Enter General Management Score (Out of 50): "))
+            dss = float(input("Enter Domain Specific Score (Out of 50): "))
             remarks = input("Enter Remarks (optional): ")
 
             found_student["GENERAL MANAGEMENT SCORE (OUT of 50)"] = gms
@@ -145,4 +148,5 @@ def main():
             print("Invalid Choice!")
 
 if __name__ == "__main__":
+
     main()  
