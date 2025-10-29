@@ -1,6 +1,3 @@
-
-# PROJECT WITHOUT PANDAS
-
 students = [
     {
         "NAME OF THE STUDENT":"Camila Wood",
@@ -46,38 +43,41 @@ def student_portal(students):
     if not found:
         print("Invalid Student Login ID/Passsword. Try Again!")
         return
-
-    print(f"\nWelcome, {found["NAME OF THE STUDENT"]}!")
-    print("1. Show Marks")
-    print("2. Show Remarks")
-    print("3. Logout")
-    choice = int(input("Enter Choice: "))
-
-    if choice==1:
-        print("1. Show General Management Score")
-        print("2. Show Domain Specific Score")
-        print("3. Show Total Marks & Percentage Obtained ")
+    again = True
+    while True:
+        print(f"\nWelcome, {found['NAME OF THE STUDENT']}!")
+        print("1. Show Marks")
+        print("2. Show Remarks")
+        print("3. Logout")
         choice = int(input("Enter Choice: "))
-        gms = found["GENERAL MANAGEMENT SCORE (OUT of 50)"]
-        dss = found["Domain Specific SCORE (OUT 50)"]
-        if choice == 1:
-            print("General Management Score:",gms)
+
+        if choice==1:
+            print("1. Show General Management Score")
+            print("2. Show Domain Specific Score")
+            print("3. Show Total Marks & Percentage Obtained ")
+            choice = int(input("Enter Choice: "))
+            gms = found["GENERAL MANAGEMENT SCORE (OUT of 50)"]
+            dss = found["Domain Specific SCORE (OUT 50)"]
+            if choice == 1:
+                print("General Management Score:",gms)
+            elif choice == 2:
+                print("Domain Specific Score:",dss)
+            elif choice == 3:
+                total = gms + dss
+                percentage = (total / 100) * 100
+                print("Total Marks Obtained (Out of 100): ",total)
+                print(f"Precentage Obtained: {percentage} %")
+            else:
+                print("Invalid Choice!")
         elif choice == 2:
-            print("Domain Specific Score:",dss)
-        elif choice == 3:
-            total = gms + dss
-            percentage = (total / 100) * 100
-            print("Total Marks Obtained (Out of 100): ",total)
-            print(f"Precentage Obtained: {"%.2f"%percentage} %")
+            remark = found["REMARKS"]
+            print("Remark: ",remark)
+        elif choice ==3:
+            print("Logging Out...\n")
+            again = False
+            break
         else:
             print("Invalid Choice!")
-    elif choice == 2:
-        remark = found["REMARKS"]
-        print("Remark: ",remark)
-    elif choice ==3:
-        print("Logging Out...\n")
-    else:
-        print("Invalid Choice!")
 
 def faculty_portal(students,faculty):
     print("\n--- Faculty Login ---")
@@ -148,4 +148,3 @@ def main():
             print("Invalid Choice!")
 
 main()  
-
