@@ -40,7 +40,6 @@ def student_portal(df):
             total=dss+gms
             print("Total Marks Obtained (Out of 200): ",total)
             percentage=(total/100)*100
-            # percentage1= "%.2f" % percentage
             print(f"Precentage Obtained: {"%.2f"%percentage} %")
         else:
             print("Invalid Choice!")
@@ -71,7 +70,6 @@ def faculty_portal(df1, df2):
         if choice == '1':
             sid = input("Enter Student Name: ")
             
-            # Check if student exists
             if sid not in df2['NAME OF THE STUDENT'].values:
                 print("Invalid Student Name. Try Again.\n")
                 continue
@@ -85,14 +83,12 @@ def faculty_portal(df1, df2):
             
             remarks = input("Enter Remarks (optional): ")
             
-            # Update existing columns safely
             for col, val in [('GENERAL MANAGEMENT SCORE (OUT of 50)', gms),
                              ('Domain Specific SCORE (OUT 50)', dss),
                              ('REMARKS', remarks)]:
                 if col in df2.columns:
                     df2.loc[df2['NAME OF THE STUDENT'] == sid, col] = val
                 else:
-                    # Column does not exist, create it safely
                     df2[col] = None
                     df2.loc[df2['NAME OF THE STUDENT'] == sid, col] = val
             
@@ -107,7 +103,7 @@ def faculty_portal(df1, df2):
 
 def main():
     df2 = load_data_student()
-    df1 = load_data_faculty()  # Load data once
+    df1 = load_data_faculty()  
     while True:
         print("\n--- Examination Portal ---")
         print("1. Student Login")
