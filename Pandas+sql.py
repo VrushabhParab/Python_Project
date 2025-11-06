@@ -12,7 +12,7 @@ def student_login():
     print("----STUDENT LOGIN----")
     loginId = input("Enter your loginId: ")
     password = input("Enter password: ")
-    student = df[(df["Login IDs"] == loginId) & (df["PASSWORDS"] == password)]
+    student = df[(df["Login_IDs"] == loginId) & (df["PASSWORDS"] == password)]
     student = student.reset_index()
     # print(student)
     if student.empty:
@@ -20,7 +20,7 @@ def student_login():
         return
     print("Loading....")
     time.sleep(1)
-    print(f"Welcome!! {student.loc[0]["NAME OF THE STUDENT"]}")
+    print(f"Welcome!! {student.loc[0]["NAME_OF_THE_STUDENT"]}")
     while True:
         print("1. Show Marks")
         print("2. Show Remarks")
@@ -33,8 +33,8 @@ def student_login():
             print("2. Domain Specific Score (OUT of 50)")
             print("3. Total Score and Percentage")
             choice1 = int(input("Enter your choice: "))
-            gms = student.loc[0]["GENERAL MANAGEMENT SCORE (OUT of 50)"]
-            dss = student.loc[0]["DOMAIN SPECIFIC SCORE (OUT 50)"]
+            gms = student.loc[0]["GENERAL_MANAGEMENT_SCORE_(OUT of 50)"]
+            dss = student.loc[0]["DOMAIN_SPECIFIC_SCORE_(OUT 50)"]
             if choice1 == 1:
                 print("Loading....")
                 time.sleep(0.5)
@@ -117,7 +117,6 @@ def faculty_login():
                 df1.loc[df1['Login IDs'] == student_id, 'REMARKS'] = remark
                 df1.to_csv("student_data.csv", index=False)
 
-                # Update SQL too
                 df1.to_sql("students", conn, if_exists="replace", index=False)
                 print("Marks/Remark updated successfully!")
 
@@ -175,7 +174,6 @@ def faculty_login():
             cur.execute("DELETE FROM students WHERE `Login_IDs` = ?", (login_id,))
             conn.commit()
             print("✅ Student removed successfully!")
-
             df1 = pd.read_sql("SELECT * FROM students", conn)
             df1.to_csv("student_data.csv", index=False)
 
@@ -193,8 +191,6 @@ def faculty_login():
 
 
 def main():
-    # df1 = load_data_students()
-    # df2 = load_data_faculty()
     while True:
         print("\n--- Examination Portal ---")
         print("1. Student Login")
@@ -212,3 +208,4 @@ def main():
 
 
 main()
+
