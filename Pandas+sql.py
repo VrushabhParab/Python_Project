@@ -29,12 +29,12 @@ def student_login():
         time.sleep(0.5)
         if choice == 1:
             print("Loading....")
-            print("1. General Management Score (OUT of 50)")
-            print("2. Domain Specific Score (OUT of 50)")
+            print("1. General Management Score (Out of 50)")
+            print("2. Domain Specific Score (Out of 50)")
             print("3. Total Score and Percentage")
             choice1 = int(input("Enter your choice: "))
-            gms = student.loc[0]["GENERAL_MANAGEMENT_SCORE_(OUT of 50)"]
-            dss = student.loc[0]["DOMAIN_SPECIFIC_SCORE_(OUT 50)"]
+            gms = student.loc[0]["GENERAL_MANAGEMENT_SCORE_OUT_of_50"]
+            dss = student.loc[0]["DOMAIN_SPECIFIC_SCORE_OUT_50"]
             if choice1 == 1:
                 print("Loading....")
                 time.sleep(0.5)
@@ -107,13 +107,13 @@ def faculty_login():
                 print("Student not found")
             else:
                 print(f"Update marks of {df1.loc[df1['Login IDs'] == student_id, 'NAME OF THE STUDENT'].values[0]}")
-                gms = float(input("Enter General Management Score (OUT of 50): "))
-                dss = float(input("Enter Domain Specific Score (OUT of 50): "))
+                gms = float(input("Enter General Management Score (Out of 50): "))
+                dss = float(input("Enter Domain Specific Score (Out of 50): "))
                 remark = input("Enter remark: ")
                 total = gms + dss
-                df1.loc[df1['Login IDs'] == student_id, 'GENERAL MANAGEMENT SCORE (OUT of 50)'] = gms
-                df1.loc[df1['Login IDs'] == student_id, 'DOMAIN SPECIFIC SCORE (OUT 50)'] = dss
-                df1.loc[df1['Login IDs'] == student_id, 'TOTAL SCORE (OUT of 100)'] = total
+                df1.loc[df1['Login IDs'] == student_id, 'GENERAL_MANAGEMENT_SCORE_OUT_of_50'] = gms
+                df1.loc[df1['Login IDs'] == student_id, 'DOMAIN_SPECIFIC_SCORE_OUT_50'] = dss
+                df1.loc[df1['Login IDs'] == student_id, 'TOTAL_SCORE_OUT_of_100'] = total
                 df1.loc[df1['Login IDs'] == student_id, 'REMARKS'] = remark
                 df1.to_csv("student_data.csv", index=False)
 
@@ -147,8 +147,8 @@ def faculty_login():
             login_id = input("Enter Login ID: ")
             password = input("Enter Password: ")
             name = input("Enter Name: ")
-            gms = float(input("Enter General Management Score (OUT of 50): "))
-            dss = float(input("Enter Domain Specific Score (OUT 50): "))
+            gms = float(input("Enter General Management Score (Out of 50): "))
+            dss = float(input("Enter Domain Specific Score (Out 50): "))
             total = gms + dss
             remark = input("Enter Remark: ")
 
@@ -208,4 +208,5 @@ def main():
 
 
 main()
+
 
