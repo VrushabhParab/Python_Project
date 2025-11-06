@@ -14,7 +14,6 @@ def student_login():
     password = input("Enter password: ")
     student = df[(df["Login_IDs"] == loginId) & (df["PASSWORDS"] == password)]
     student = student.reset_index()
-    # print(student)
     if student.empty:
         print("Invalid Credentials. Try Again!")
         return
@@ -29,8 +28,8 @@ def student_login():
         time.sleep(0.5)
         if choice == 1:
             print("Loading....")
-            print("1. General Management Score (Out of 50)")
-            print("2. Domain Specific Score (Out of 50)")
+            print("1. General Management Score (OUT of 50)")
+            print("2. Domain Specific Score (OUT of 50)")
             print("3. Total Score and Percentage")
             choice1 = int(input("Enter your choice: "))
             gms = student.loc[0]["GENERAL_MANAGEMENT_SCORE_OUT_of_50"]
@@ -49,6 +48,7 @@ def student_login():
                 totalScore = gms + dss
                 print("Your Total Score:",totalScore)
                 percentage = (totalScore/100) * 100
+                percentage = round(percentage)
                 print("Percentage obtained:",percentage,"%")
             else:
                 print("Invalid choice!")
@@ -103,18 +103,18 @@ def faculty_login():
             student_id = input("Enter student ID: ")
             print("Loading....")
             time.sleep(0.5)
-            if student_id not in list(df1["Login IDs"]):
+            if student_id not in list(df1["Login_IDs"]):
                 print("Student not found")
             else:
-                print(f"Update marks of {df1.loc[df1['Login IDs'] == student_id, 'NAME OF THE STUDENT'].values[0]}")
-                gms = float(input("Enter General Management Score (Out of 50): "))
-                dss = float(input("Enter Domain Specific Score (Out of 50): "))
+                print(f"Update marks of {df1.loc[df1['Login_IDs'] == student_id, 'NAME_OF_THE_STUDENT'].values[0]}")
+                gms = float(input("Enter General Management Score (OUT of 50): "))
+                dss = float(input("Enter Domain Specific Score (OUT of 50): "))
                 remark = input("Enter remark: ")
                 total = gms + dss
-                df1.loc[df1['Login IDs'] == student_id, 'GENERAL_MANAGEMENT_SCORE_OUT_of_50'] = gms
-                df1.loc[df1['Login IDs'] == student_id, 'DOMAIN_SPECIFIC_SCORE_OUT_50'] = dss
-                df1.loc[df1['Login IDs'] == student_id, 'TOTAL_SCORE_OUT_of_100'] = total
-                df1.loc[df1['Login IDs'] == student_id, 'REMARKS'] = remark
+                df1.loc[df1['Login_IDs'] == student_id, 'GENERAL_MANAGEMENT_SCORE_OUT_of_50'] = gms
+                df1.loc[df1['Login_IDs'] == student_id, 'DOMAIN_SPECIFIC_SCORE_OUT_50'] = dss
+                df1.loc[df1['Login_IDs'] == student_id, 'TOTAL_SCORE_OUT_of_100'] = total
+                df1.loc[df1['Login_IDs'] == student_id, 'REMARKS'] = remark
                 df1.to_csv("student_data.csv", index=False)
 
                 df1.to_sql("students", conn, if_exists="replace", index=False)
@@ -145,37 +145,48 @@ def faculty_login():
         elif choice == 3:
             print("\n--- Add Student (SQL) ---")
             login_id = input("Enter Login ID: ")
-            password = input("Enter Password: ")
-            name = input("Enter Name: ")
-            gms = float(input("Enter General Management Score (Out of 50): "))
-            dss = float(input("Enter Domain Specific Score (Out 50): "))
-            total = gms + dss
-            remark = input("Enter Remark: ")
 
-            try:
+            cur.execute("SELECT * FROM students WHERE Login_IDs = ?", (login_id,))
+            existing = cur.fetchone()
+
+            if existing:
+                print("A student with this Login ID already exists. Please use a different ID.")
+            else:
+                password = input("Enter Password: ")
+                name = input("Enter Name: ")
+                gms = float(input("Enter General Management Score (OUT of 50): "))
+                dss = float(input("Enter Domain Specific Score (OUT 50): "))
+                total = gms + dss
+                remark = input("Enter Remark: ")
+
                 cur.execute("""
                     INSERT INTO students ("Login_IDs","PASSWORDS","NAME_OF_THE_STUDENT",
                     "GENERAL_MANAGEMENT_SCORE_OUT_of_50","DOMAIN_SPECIFIC_SCORE_OUT_50",
                     "TOTAL_SCORE_OUT_of_100","REMARKS")
                     VALUES (?, ?, ?, ?, ?, ?, ?)
                 """, (login_id, password, name, gms, dss, total, remark))
+                
                 conn.commit()
-                print("✅ Student added successfully!")
+                print("Student added successfully!")
 
                 df1 = pd.read_sql("SELECT * FROM students", conn)
                 df1.to_csv("student_data.csv", index=False)
 
-            except Exception as e:
-                print("Error:", e)
 
         elif choice == 4:
             print("\n--- Remove Student (SQL) ---")
             login_id = input("Enter Student Login ID to remove: ")
-            cur.execute("DELETE FROM students WHERE `Login_IDs` = ?", (login_id,))
+
+            cur.execute("DELETE FROM students WHERE Login_IDs = ?", (login_id,))
             conn.commit()
-            print("✅ Student removed successfully!")
-            df1 = pd.read_sql("SELECT * FROM students", conn)
-            df1.to_csv("student_data.csv", index=False)
+
+            if cur.rowcount == 0:
+                print("No student found with that Login ID.")
+            else:
+                print("Student removed successfully!")
+                df1 = pd.read_sql("SELECT * FROM students", conn)
+                df1.to_csv("student_data.csv", index=False)
+
 
         elif choice == 5:
             print("Logging out...\n")
@@ -187,10 +198,8 @@ def faculty_login():
     conn.close()
 
 
-        
-
-
 def main():
+
     while True:
         print("\n--- Examination Portal ---")
         print("1. Student Login")
@@ -208,5 +217,4 @@ def main():
 
 
 main()
-
 
