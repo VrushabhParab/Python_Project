@@ -37,9 +37,9 @@ The portal uses CSV files for persistent data storage and dynamically syncs data
 
         By Domain Specific Score
 
-        Add new student record (stored in both CSV and SQLite DB)
+    Add new student record (stored in both CSV and SQLite DB)
   
-        Remove student record
+    Remove student record
 
 -Auto-sync between student_data.csv and SQLite database
 
