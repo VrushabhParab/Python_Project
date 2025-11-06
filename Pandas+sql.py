@@ -83,11 +83,9 @@ def faculty_login():
     time.sleep(1)
     print(f"Welcome!! {faculty.iloc[0]['Name']}")
 
-    # Connect to SQL database
     conn = sqlite3.connect("examination.db")
     cur = conn.cursor()
 
-    # Make sure the SQL table exists (if not, create from CSV)
     df1.columns = df1.columns.str.strip()
     df1.columns = df1.columns.str.replace(' ', '_')
     df1.columns = df1.columns.str.replace('[()]', '', regex=True)
@@ -155,7 +153,6 @@ def faculty_login():
             total = gms + dss
             remark = input("Enter Remark: ")
 
-            # Insert into SQL table
             try:
                 cur.execute("""
                     INSERT INTO students ("Login_IDs","PASSWORDS","NAME_OF_THE_STUDENT",
@@ -166,7 +163,6 @@ def faculty_login():
                 conn.commit()
                 print("✅ Student added successfully!")
 
-                # Sync back to CSV
                 df1 = pd.read_sql("SELECT * FROM students", conn)
                 df1.to_csv("student_data.csv", index=False)
 
@@ -180,7 +176,6 @@ def faculty_login():
             conn.commit()
             print("✅ Student removed successfully!")
 
-            # Sync back to CSV
             df1 = pd.read_sql("SELECT * FROM students", conn)
             df1.to_csv("student_data.csv", index=False)
 
@@ -217,10 +212,3 @@ def main():
 
 
 main()
-
-
-# import pandas as pd
-
-# df = pd.read_csv("student_data.csv")
-# print("Columns:", list(df.columns))
-# print("\nDuplicate columns:", df.columns[df.columns.duplicated()].tolist())
