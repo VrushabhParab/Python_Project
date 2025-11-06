@@ -59,5 +59,14 @@ The portal uses CSV files for persistent data storage and dynamically syncs data
 | Data Storage         | CSV Files            |
 | Delay                | time module          |
 
+## How to Run Locally
+
+1. Install Required Dependencies
+           -pip install pandas
+
+2. Ensure your CSV data files exist:
+   -student_data.csv
+   -faculty_data.csv
+
 ## License
 This project is for educational purposes and can be modified and reused freely.
